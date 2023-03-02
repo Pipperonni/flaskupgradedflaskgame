@@ -14,13 +14,13 @@ def index():
         'coming_soon': ['Flower Picking Sim', 'Frog Stomp'],
         'out_now': ['Tank Busters', 'Kitty with a Kite']
     }
-    # game_match = GameLibrary.query.filter_by(game_title=game_title).first()
+    game_match = GameLibrary.query.filter_by(game_title=game_title).first()
     g = GameLibrary(game_title=game_title, genre=genre, rating=rating)
     if form.validate_on_submit():
-        g.commit()
-        # if not game_match:
-        #     flash(f'Sorry, there is no {game_title} in our library.')
-        #     return redirect('/')
+        # g.commit()
+        if not game_match:
+            flash(f'Sorry, there is no {game_title} in our library.')
+            return redirect('/')
         flash(f'Your search for "{game_title}" successful')
         return redirect('/')
     return render_template('home.jinja', games=games, form=form, title='Home')
