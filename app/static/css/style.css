@@ -1,0 +1,37 @@
+*{
+    box-sizing: border-box;
+}
+
+.image {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.fnames{
+    margin-right: 5px;
+}
+
+.lnames{
+    margin-left: 5px;
+}
+
+.fullname{
+    display: flex;
+    justify-content: left;
+    align-items: center; 
+}
+
+.nav-links{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+body{
+    background-image: url("../images/gamerback.jpg");
+    color: rgb(250, 4, 4);
+}
+

@@ -1,0 +1,36 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <h2>Home Page</h2>
+    <h3>Coming Out Soon</h3>
+    <div>
+    {% for coming_soons in games['coming_soon'] %}
+        <br>
+        <span>{{ coming_soons }}</span>
+    {% endfor %}
+     <h3>Out Now</h3>
+    <br>
+    {% for out_nows in games['out_now'] %}
+
+        <span>{{ out_nows }}</span>
+    {% endfor %}
+    </div> <br>
+    <form action="" method="post">
+        {{ form.hidden_tag() }} 
+        <p>
+            {{ form.game_title.label }} <br>
+            {{ form.game_title(size=45) }}
+        </p>
+        <p>
+            {{ form.genre.label }} <br>
+            {{ form.genre(size=32) }}
+        </p>
+        <p>
+            {{ form.rating.label }} <br>
+            {{ form.rating(size=10) }}
+        </p>
+        <p>
+            {{ form.submit(class="btn btn-secondary") }}
+        </p>
+    </form>
+{% endblock %}
