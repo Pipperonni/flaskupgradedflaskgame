@@ -36,6 +36,9 @@
     {% endif %}
     {% endwith %}
     <h1>BS Games</h1>
+    {% if current_user.is_active %}
+        <p>Greetings {{ current_user.username }}</p>
+    {% endif %}
     {% block content %}
 
     {% endblock %}

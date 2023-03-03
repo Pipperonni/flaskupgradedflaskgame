@@ -12,9 +12,9 @@
             {{ form.password.label }} <br>
             {{ form.password(size=32) }}
         </p>
-         <p>
-            {{ form.remember.label }} <br>
-            {{ form.remember() }}
+        <p>
+            {{ form.remember_me() }} {{ form.remember_me.label }} <br>
+            
         </p>
         <p>
             {{ form.submit(class='btn btn-primary') }}

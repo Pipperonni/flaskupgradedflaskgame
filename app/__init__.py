@@ -10,4 +10,12 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 
-from app import routes, models
+login.login_view = '/login'
+login.login_message = 'Make sure you login'
+
+from app.blueprints.auth import bp as auth_bp
+app.register_blueprint(auth_bp)
+
+from app.blueprints.main import bp as main_bp
+app.register_blueprint(main_bp)
+

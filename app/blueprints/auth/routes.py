@@ -1,35 +1,10 @@
-from flask import render_template, flash, redirect
-from app import app
-from app.forms import RegisterForm, LoginForm, HomeSearchGames
-from app.models import User, GameLibrary
-from flask_login import current_user, login_user
+from . import bp as auth_bp
+from app.forms import RegisterForm, LoginForm
+from app.blueprints.auth.models import User
+from flask_login import login_user, logout_user, login_required, current_user
+from flask import render_template, redirect, flash
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    form = HomeSearchGames()
-    game_title = form.game_title.data
-    genre = form.genre.data
-    rating = form.rating.data
-    games = {
-        'coming_soon': ['Flower Picking Sim', 'Frog Stomp'],
-        'out_now': ['Tank Busters', 'Kitty with a Kite']
-    }
-    game_match = GameLibrary.query.filter_by(game_title=game_title).first()
-    g = GameLibrary(game_title=game_title, genre=genre, rating=rating)
-    if form.validate_on_submit():
-        # g.commit()
-        if not game_match:
-            flash(f'Sorry, there is no {game_title} in our library.')
-            return redirect('/')
-        flash(f'Your search for "{game_title}" successful')
-        return redirect('/')
-    return render_template('home.jinja', games=games, form=form, title='Home')
-
-@app.route('/about')
-def about():
-    return render_template('about.jinja')
-
-@app.route('/register', methods=['GET', 'POST'])
+@auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -54,7 +29,7 @@ def register():
             return redirect('/')
     return render_template('/register.jinja', form=form)
 
-@app.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def sign_in():
     form = LoginForm()
     email = form.email.data
@@ -62,14 +37,25 @@ def sign_in():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
+
         user_match = User.query.filter_by(email=email).first()
         if not user_match or not user_match.check_password(password):
             flash(f'Username or password are incorrect, try again')
             return redirect('/login')
         flash(f'{email} sign in was successful')
+        login_user(user_match, remember=form.remember_me.data)
         return redirect('/')
     return render_template('/login.jinja', form=form)
 
-@app.route('/blog')
-def blog():
-    return render_template('/blog.jinja')
+@auth_bp.route('/blog/<username>')
+def user(username):
+    user_match = User.query.filter_by(username=username).first()
+    if not user_match:
+        redirect('/')
+    return render_template('blog.jinja', user=user_match)
+
+@auth_bp.route('/signout')
+@login_required
+def sign_out():
+    logout_user()
+    return redirect('/')
