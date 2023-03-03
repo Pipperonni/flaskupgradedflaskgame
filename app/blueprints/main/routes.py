@@ -1,5 +1,5 @@
 from . import bp as main_bp
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, url_for
 from app.forms import HomeSearchGames
 from app.blueprints.main.models import GameLibrary
 from flask_login import login_required
@@ -20,9 +20,9 @@ def index():
         # g.commit()
         if not game_match:
             flash(f'Sorry, there is no {game_title} in our library.')
-            return redirect('/')
+            return redirect(url_for('main.index'))
         flash(f'Your search for "{game_title}" successful')
-        return redirect('/')
+        return redirect(url_for('main.index'))
     return render_template('home.jinja', games=games, form=form, title='Home')
 
 @main_bp.route('/about')
