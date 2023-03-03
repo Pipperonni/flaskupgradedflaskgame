@@ -59,3 +59,4 @@ def user(username):
 def sign_out():
     logout_user()
     return redirect('/')
+
